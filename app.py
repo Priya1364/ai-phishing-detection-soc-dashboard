@@ -1,4 +1,5 @@
-import joblib
+
+        import joblib
 import os
 import pandas as pd
 import streamlit as st
@@ -47,14 +48,12 @@ def clean_text(text):
 @st.cache_resource
 def load_model():
 
-    # If saved model exists → load it
     if os.path.exists("model.pkl") and os.path.exists("vectorizer.pkl"):
         model = joblib.load("model.pkl")
         vectorizer = joblib.load("vectorizer.pkl")
         accuracy = 0.98
         return model, vectorizer, accuracy
 
-    # Else → train new model
     data = pd.read_csv("sms.tsv", sep='\t', names=["label", "message"])
     data['label'] = data['label'].map({'ham': 0, 'spam': 1})
     data['message'] = data['message'].apply(clean_text)
@@ -72,11 +71,14 @@ def load_model():
 
     accuracy = model.score(X_test, y_test)
 
-    # Save model
     joblib.dump(model, "model.pkl")
     joblib.dump(vectorizer, "vectorizer.pkl")
 
-    return model, vectorizer, accuracy   
+    return model, vectorizer, accuracy
+
+
+# ✅ VERY IMPORTANT (call function BEFORE using accuracy)
+model, vectorizer, accuracy = load_model()
 
 # ---------------- SIDEBAR ----------------
 st.sidebar.title("⚙️ System Info")
@@ -184,4 +186,4 @@ if st.session_state.history:
 
 # ---------------- FOOTER ----------------
 st.markdown("---")
-st.caption("🚀 Built by Priyadharshini L |  SOC Analyst Aspirant| Cybersecurity Project")
+st.caption("🚀 Built by Priyadharshini L | SOC Analyst Aspirant | Cybersecurity Project")
