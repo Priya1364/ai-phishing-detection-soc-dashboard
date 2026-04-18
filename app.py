@@ -74,7 +74,12 @@ def load_model():
     joblib.dump(model, "model.pkl")
     joblib.dump(vectorizer, "vectorizer.pkl")
 
-    return model, vectorizer, accuracy
+    # LOAD MODEL
+model, vectorizer, accuracy = load_model()
+
+# SIDEBAR
+st.sidebar.title("⚙️ System Info")
+st.sidebar.success(f"Model Accuracy: {accuracy*100:.2f}%")
 
 # ---------------- SIDEBAR ----------------
 st.sidebar.title("⚙️ System Info")
