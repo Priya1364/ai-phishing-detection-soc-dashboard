@@ -1,5 +1,4 @@
-
-        import joblib
+import joblib
 import os
 import pandas as pd
 import streamlit as st
@@ -76,8 +75,7 @@ def load_model():
 
     return model, vectorizer, accuracy
 
-
-# ✅ VERY IMPORTANT (call function BEFORE using accuracy)
+# ---------------- LOAD MODEL CALL ----------------
 model, vectorizer, accuracy = load_model()
 
 # ---------------- SIDEBAR ----------------
