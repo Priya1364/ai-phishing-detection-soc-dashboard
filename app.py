@@ -47,12 +47,14 @@ def clean_text(text):
 @st.cache_resource
 def load_model():
 
+    # If saved model exists → load it
     if os.path.exists("model.pkl") and os.path.exists("vectorizer.pkl"):
         model = joblib.load("model.pkl")
         vectorizer = joblib.load("vectorizer.pkl")
-        accuracy = 0.98  # approximate (optional)
+        accuracy = 0.98
         return model, vectorizer, accuracy
 
+    # Else → train new model
     data = pd.read_csv("sms.tsv", sep='\t', names=["label", "message"])
     data['label'] = data['label'].map({'ham': 0, 'spam': 1})
     data['message'] = data['message'].apply(clean_text)
@@ -70,16 +72,11 @@ def load_model():
 
     accuracy = model.score(X_test, y_test)
 
-    # SAVE MODEL
+    # Save model
     joblib.dump(model, "model.pkl")
     joblib.dump(vectorizer, "vectorizer.pkl")
 
-    # LOAD MODEL
-model, vectorizer, accuracy = load_model()
-
-# SIDEBAR
-st.sidebar.title("⚙️ System Info")
-st.sidebar.success(f"Model Accuracy: {accuracy*100:.2f}%")
+    return model, vectorizer, accuracy   
 
 # ---------------- SIDEBAR ----------------
 st.sidebar.title("⚙️ System Info")
